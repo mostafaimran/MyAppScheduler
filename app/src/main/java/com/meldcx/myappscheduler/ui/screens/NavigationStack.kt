@@ -36,8 +36,10 @@ fun NavigationStack(viewModel: AppSchedulerViewModel = hiltViewModel()) {
             )
         ) {
             val id = it.arguments?.getInt(EXTRA_ID)
-            AddScheduleScreen(viewModel, editedScheduleId = id) {
-                navController.navigate(Screen.Schedules.route)
+            AddScheduleScreen(viewModel, editedScheduleId = id, onBack = {
+                navController.popBackStack()
+            }) {
+                navController.popBackStack()
 
                 Toast.makeText(
                     context,

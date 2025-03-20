@@ -77,6 +77,7 @@ fun ScheduleScreen(
             } else {
                 Text(
                     LocalContext.current.getString(R.string.no_schedule_found),
+                    style = MaterialTheme.typography.titleLarge,
                     modifier = Modifier.align(Alignment.Center)
                 )
             }
