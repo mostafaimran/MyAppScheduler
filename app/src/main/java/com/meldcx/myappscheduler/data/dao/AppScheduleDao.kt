@@ -17,4 +17,7 @@ interface AppScheduleDao {
 
     @Query("SELECT * FROM AppSchedule")
     fun getAllSchedules(): List<AppSchedule>
+
+    @Query("SELECT * FROM AppSchedule WHERE id = :id LIMIT 1")
+    fun getSchedule(id: Int): AppSchedule
 }

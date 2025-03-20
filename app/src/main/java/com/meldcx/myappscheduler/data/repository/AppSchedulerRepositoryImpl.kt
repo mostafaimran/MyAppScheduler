@@ -9,11 +9,12 @@ import com.meldcx.myappscheduler.datamodel.model.AppSchedule
 import com.meldcx.myappscheduler.datamodel.repository.AppSchedulerRepository
 import com.meldcx.myappscheduler.util.AppLaunchReceiver
 import com.meldcx.myappscheduler.util.Extras
+import com.meldcx.myappscheduler.util.getWithMutability
 import javax.inject.Inject
 
 class AppSchedulerRepositoryImpl @Inject constructor(
     private val context: Context,
-    private val dao: AppScheduleDao
+    private val dao: AppScheduleDao,
 ) : AppSchedulerRepository {
 
     override fun scheduleApp(schedule: AppSchedule) {
@@ -22,7 +23,7 @@ class AppSchedulerRepositoryImpl @Inject constructor(
             putExtra(Extras.EXTRA_PACKAGE, schedule.packageName)
         }
         val pendingIntent = PendingIntent.getBroadcast(
-            context, schedule.id, intent, PendingIntent.FLAG_UPDATE_CURRENT
+            context, schedule.id, intent, PendingIntent.FLAG_UPDATE_CURRENT.getWithMutability()
         )
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, schedule.scheduledTime, pendingIntent)
         dao.insertSchedule(schedule)
@@ -32,11 +33,15 @@ class AppSchedulerRepositoryImpl @Inject constructor(
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = Intent(context, AppLaunchReceiver::class.java)
         val pendingIntent = PendingIntent.getBroadcast(
-            context, schedule.id, intent, PendingIntent.FLAG_UPDATE_CURRENT
+            context, schedule.id, intent, PendingIntent.FLAG_UPDATE_CURRENT.getWithMutability()
         )
         alarmManager.cancel(pendingIntent)
         dao.deleteSchedule(schedule)
     }
 
     override fun getAllSchedules() = dao.getAllSchedules()
+
+    override fun getSchedule(id: Int): AppSchedule? {
+        return dao.getSchedule(id)
+    }
 }

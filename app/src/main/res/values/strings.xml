@@ -9,6 +9,7 @@
     <string name="select_time">Select Time</string>
     <string name="schedule_app">Schedule App</string>
     <string name="save_schedule">Save Schedule</string>
+    <string name="my_schedules">My Schedules</string>
     <string name="ok">OK</string>
     <string name="hour">Hour: %d</string>
     <string name="minute">Minute: %d</string>

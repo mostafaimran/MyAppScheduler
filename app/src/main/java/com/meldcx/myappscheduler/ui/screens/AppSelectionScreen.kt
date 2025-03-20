@@ -3,6 +3,7 @@ package com.meldcx.myappscheduler.ui.screens
 import android.content.pm.PackageItemInfo
 import android.content.pm.PackageManager
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
@@ -19,6 +20,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 
@@ -37,16 +39,19 @@ fun AppSelectionScreen(onDismiss: () -> Unit, onSelectedApp: (PackageItemInfo) -
         LazyColumn(modifier = Modifier.padding(16.dp)) {
             items(installedApps) { applicationInfo ->
                 Box(
-                    modifier = Modifier.fillMaxSize()
-                        .background(
-                            color = MaterialTheme.colorScheme.surfaceVariant,
-                            shape = RoundedCornerShape(16.dp)
-                        ).padding(16.dp)
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .clip(RoundedCornerShape(16.dp))
+                        .border(1.dp, MaterialTheme.colorScheme.primary, RoundedCornerShape(16.dp))
                         .clickable {
-                            onSelectedApp (applicationInfo)
-                        }
+                            onSelectedApp(applicationInfo)
+                        }.padding(16.dp)
+
                 ) {
-                    Text(text = applicationInfo.packageName, modifier = Modifier.align(alignment = Alignment.Center))
+                    Text(
+                        text = applicationInfo.packageName,
+                        modifier = Modifier.align(alignment = Alignment.Center)
+                    )
                 }
                 Spacer(modifier = Modifier.height(16.dp))
             }

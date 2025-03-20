@@ -34,7 +34,8 @@ fun TimePickerDialog(
     Dialog(
         onDismissRequest = onDismissRequest,
         properties = DialogProperties(
-            usePlatformDefaultWidth = false
+            usePlatformDefaultWidth = false,
+            dismissOnClickOutside = true
         ),
     ) {
         Surface(

@@ -27,7 +27,7 @@
         android:theme="@style/Theme.MyAppScheduler"
         tools:targetApi="31">
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".ui.activity.AppSchedulerActivity"
             android:exported="true"
             android:theme="@style/Theme.MyAppScheduler">
             <intent-filter>

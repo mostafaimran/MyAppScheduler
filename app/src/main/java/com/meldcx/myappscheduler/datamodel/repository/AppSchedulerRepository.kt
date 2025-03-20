@@ -6,4 +6,5 @@ interface AppSchedulerRepository {
     fun scheduleApp(schedule: AppSchedule)
     fun cancelSchedule(schedule: AppSchedule)
     fun getAllSchedules(): List<AppSchedule>
+    fun getSchedule(id: Int): AppSchedule?
 }

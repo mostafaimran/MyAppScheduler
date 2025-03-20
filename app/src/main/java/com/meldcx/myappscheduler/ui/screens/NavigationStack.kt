@@ -4,41 +4,34 @@ import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
+import androidx.navigation.toRoute
 import com.meldcx.myappscheduler.R
 import com.meldcx.myappscheduler.datamodel.model.Screen
-import com.meldcx.myappscheduler.ui.AppSchedulerViewModel
-import com.meldcx.myappscheduler.util.Extras.EXTRA_ID
 
 @Composable
-fun NavigationStack(viewModel: AppSchedulerViewModel = hiltViewModel()) {
+fun NavigationStack() {
     val navController = rememberNavController()
 
     val context = LocalContext.current
 
-    NavHost(navController = navController, startDestination = Screen.Schedules.route) {
-        composable(route = Screen.Schedules.route) {
-            ScheduleScreen(viewModel = viewModel) {
-                navController.navigate(Screen.AddSchedule.route)
+    NavHost(navController = navController, startDestination = Screen.Schedules) {
+        composable<Screen.Schedules> {
+            ScheduleScreen {
+                navController.navigate(Screen.AddSchedule(it?.id))
             }
         }
-        composable(
-            route = Screen.AddSchedule.route + "?$EXTRA_ID={$EXTRA_ID}",
-            arguments = listOf(
-                navArgument(EXTRA_ID) {
-                    type = NavType.IntType
-                    defaultValue = -1
-                }
-            )
-        ) {
-            val id = it.arguments?.getInt(EXTRA_ID)
-            AddScheduleScreen(viewModel, editedScheduleId = id, onBack = {
-                navController.popBackStack()
-            }) {
+
+        composable<Screen.AddSchedule> {
+            val args = it.toRoute<Screen.AddSchedule>()
+
+            AddScheduleScreen(
+                editedScheduleId = args.id,
+                onBack = {
+                    navController.popBackStack()
+                }) {
                 navController.popBackStack()
 
                 Toast.makeText(

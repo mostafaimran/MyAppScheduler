@@ -1,4 +1,4 @@
-package com.meldcx.myappscheduler.ui
+package com.meldcx.myappscheduler.ui.viewmodel
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -24,10 +24,6 @@ class AppSchedulerViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             scheduleListState = scheduleListState.copy(schedules = repository.getAllSchedules())
         }
-    }
-
-    fun addSchedule(schedule: AppSchedule) {
-        viewModelScope.launch(Dispatchers.IO) { repository.scheduleApp(schedule) }
     }
 
     fun cancelSchedule(schedule: AppSchedule) {
