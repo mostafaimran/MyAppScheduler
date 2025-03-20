@@ -36,12 +36,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.meldcx.myappscheduler.R
+import com.meldcx.myappscheduler.datamodel.model.AppInfo
 import com.meldcx.myappscheduler.datamodel.model.AppSchedule
 import com.meldcx.myappscheduler.ui.viewmodel.AddScheduleViewModel
+import com.meldcx.myappscheduler.util.getAppInfo
 import com.meldcx.myappscheduler.util.getScheduleTimeFormat
 import java.util.Calendar
 
@@ -56,14 +59,14 @@ fun AddScheduleScreen(
 
     val schedule = viewModel.scheduleState.schedule
 
-    var selectedApp by remember { mutableStateOf<PackageItemInfo?>(null) }
+    var selectedApp by remember { mutableStateOf<AppInfo?>(null) }
     var selectedTime by remember { mutableStateOf<Calendar?>(null) }
     var showSelection by remember { mutableStateOf(false) }
     var showTimeSelection by remember { mutableStateOf(false) }
     val timePickerState = rememberTimePickerState()
 
     if (schedule != null) {
-        selectedApp = PackageItemInfo().apply { packageName = schedule.packageName }
+        selectedApp = LocalContext.current.getAppInfo(packageName = schedule.packageName)
         selectedTime = Calendar.getInstance().apply { timeInMillis = schedule.scheduledTime }
 
         timePickerState.hour = selectedTime!!.get(Calendar.HOUR_OF_DAY)
@@ -196,7 +199,7 @@ fun AddScheduleScreen(
                         ) {
                             if (selectedApp != null) {
                                 Text(
-                                    text = selectedApp?.packageName ?: "",
+                                    text = selectedApp?.name ?: "",
                                     style = MaterialTheme.typography.titleLarge,
                                     color = MaterialTheme.colorScheme.primary
                                 )

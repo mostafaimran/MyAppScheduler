@@ -38,7 +38,7 @@
         </activity>
 
         <receiver
-            android:name=".util.AppLaunchReceiver"
+            android:name=".receiver.AppLaunchReceiver"
             android:exported="false" />
     </application>
 

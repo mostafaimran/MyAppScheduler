@@ -23,13 +23,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import com.meldcx.myappscheduler.datamodel.model.AppInfo
+import com.meldcx.myappscheduler.util.getUserInstalledApps
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppSelectionScreen(onDismiss: () -> Unit, onSelectedApp: (PackageItemInfo) -> Unit) {
+fun AppSelectionScreen(onDismiss: () -> Unit, onSelectedApp: (AppInfo) -> Unit) {
     val context = LocalContext.current
-    val packageManager = context.packageManager
-    val installedApps = packageManager.getInstalledApplications(PackageManager.GET_META_DATA)
+    val installedApps = context.getUserInstalledApps()
 
     ModalBottomSheet(
         onDismissRequest = {
@@ -37,19 +38,20 @@ fun AppSelectionScreen(onDismiss: () -> Unit, onSelectedApp: (PackageItemInfo) -
         }
     ) {
         LazyColumn(modifier = Modifier.padding(16.dp)) {
-            items(installedApps) { applicationInfo ->
+            items(installedApps) { appInfo ->
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
                         .clip(RoundedCornerShape(16.dp))
                         .border(1.dp, MaterialTheme.colorScheme.primary, RoundedCornerShape(16.dp))
                         .clickable {
-                            onSelectedApp(applicationInfo)
-                        }.padding(16.dp)
+                            onSelectedApp(appInfo)
+                        }
+                        .padding(16.dp)
 
                 ) {
                     Text(
-                        text = applicationInfo.packageName,
+                        text = appInfo.name,
                         modifier = Modifier.align(alignment = Alignment.Center)
                     )
                 }

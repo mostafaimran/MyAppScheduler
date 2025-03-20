@@ -7,7 +7,7 @@ import android.content.Intent
 import com.meldcx.myappscheduler.data.dao.AppScheduleDao
 import com.meldcx.myappscheduler.datamodel.model.AppSchedule
 import com.meldcx.myappscheduler.datamodel.repository.AppSchedulerRepository
-import com.meldcx.myappscheduler.util.AppLaunchReceiver
+import com.meldcx.myappscheduler.receiver.AppLaunchReceiver
 import com.meldcx.myappscheduler.util.Extras
 import com.meldcx.myappscheduler.util.getWithMutability
 import javax.inject.Inject
