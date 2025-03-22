@@ -88,7 +88,7 @@ fun AddScheduleScreen(
 
     if (showTimeSelection) {
         TimePickerDialog(
-            onDismissRequest = { },
+            onDismissRequest = { showTimeSelection = false },
             confirmButton = {
                 TextButton(
                     onClick = {
@@ -146,9 +146,11 @@ fun AddScheduleScreen(
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
-            Column(modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+            ) {
                 Text(
                     text = stringResource(R.string.selected_app),
                     style = MaterialTheme.typography.bodyLarge
@@ -161,7 +163,7 @@ fun AddScheduleScreen(
                         .clip(RoundedCornerShape(16.dp))
                         .border(
                             1.dp,
-                            MaterialTheme.colorScheme.primary,
+                            MaterialTheme.colorScheme.surfaceVariant,
                             RoundedCornerShape(16.dp)
                         )
                         .clickable {
@@ -206,7 +208,7 @@ fun AddScheduleScreen(
                         .clip(RoundedCornerShape(16.dp))
                         .border(
                             1.dp,
-                            MaterialTheme.colorScheme.primary,
+                            MaterialTheme.colorScheme.surfaceVariant,
                             RoundedCornerShape(16.dp)
                         )
                         .clickable {

@@ -2,6 +2,7 @@ package com.meldcx.myappscheduler.ui.screens
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -26,6 +27,8 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -39,6 +42,9 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.meldcx.myappscheduler.R
 import com.meldcx.myappscheduler.datamodel.model.AppSchedule
 import com.meldcx.myappscheduler.ui.viewmodel.AppSchedulerViewModel
+import com.meldcx.myappscheduler.ui.viewmodel.DeleteScheduleState
+import com.meldcx.myappscheduler.util.getScheduleTimeFormat
+import java.util.Calendar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -48,6 +54,23 @@ fun ScheduleScreen(
 ) {
     val schedules = viewModel.scheduleListState.schedules
     val lifecycleOwner = LocalLifecycleOwner.current
+
+    val showDeleteScheduleDialog = remember { mutableStateOf<DeleteScheduleState?>(null) }
+
+    if (showDeleteScheduleDialog.value?.showDialog == true) {
+        DeleteScheduleDialogScreen(
+            schedule = showDeleteScheduleDialog.value!!.schedule!!,
+            onDelete = {
+                viewModel.cancelSchedule(showDeleteScheduleDialog.value!!.schedule!!)
+                viewModel.loadSchedules()
+
+                showDeleteScheduleDialog.value = DeleteScheduleState(false, null)
+            },
+            onDismiss = {
+                showDeleteScheduleDialog.value = DeleteScheduleState(false, null)
+            }
+        )
+    }
 
     LaunchedEffect(Unit) {
         lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -92,6 +115,9 @@ fun ScheduleScreen(
                 if (schedules.isNotEmpty()) {
                     LazyColumn(modifier = Modifier.padding(16.dp)) {
                         items(schedules) { schedule ->
+                            val calendar = Calendar.getInstance()
+                            calendar.timeInMillis = schedule.scheduledTime
+
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 Box(
                                     modifier = Modifier
@@ -106,15 +132,25 @@ fun ScheduleScreen(
                                         }
                                         .padding(16.dp)
                                 ) {
-                                    Text(
-                                        text = schedule.name,
-                                        modifier = Modifier.align(alignment = Alignment.Center)
-                                    )
+                                    Row(
+                                        verticalAlignment = Alignment.CenterVertically,
+                                        horizontalArrangement = Arrangement.SpaceBetween
+                                    ) {
+                                        Text(
+                                            text = schedule.name,
+                                            style = MaterialTheme.typography.titleLarge
+                                        )
+                                        Text(text = " | ")
+                                        Text(
+                                            text = calendar.time.getScheduleTimeFormat(),
+                                            style = MaterialTheme.typography.titleSmall
+                                        )
+                                    }
                                 }
                                 IconButton(
                                     onClick = {
-                                        viewModel.cancelSchedule(schedule)
-                                        viewModel.loadSchedules()
+                                        showDeleteScheduleDialog.value =
+                                            DeleteScheduleState(true, schedule)
                                     }
                                 ) {
                                     Icon(

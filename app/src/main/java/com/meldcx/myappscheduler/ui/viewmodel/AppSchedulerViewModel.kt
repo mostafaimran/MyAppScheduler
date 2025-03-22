@@ -32,3 +32,5 @@ class AppSchedulerViewModel @Inject constructor(
 }
 
 data class ScheduleListState(val schedules: List<AppSchedule> = emptyList())
+
+data class DeleteScheduleState(val showDialog: Boolean = false, val schedule: AppSchedule? = null)
