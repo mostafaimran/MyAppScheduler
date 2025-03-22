@@ -22,13 +22,26 @@ class AppSchedulerViewModel @Inject constructor(
 
     fun loadSchedules() {
         viewModelScope.launch(Dispatchers.IO) {
-            scheduleListState = scheduleListState.copy(schedules = repository.getAllSchedules())
+            scheduleListState = scheduleListState.copy(
+                schedules = repository.getAllSchedules(),
+                loadSchedules = false
+            )
         }
     }
 
     fun cancelSchedule(schedule: AppSchedule) {
-        viewModelScope.launch(Dispatchers.IO) { repository.cancelSchedule(schedule) }
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.cancelSchedule(schedule)
+            refreshSchedules()
+        }
+    }
+
+    fun refreshSchedules() {
+        scheduleListState = scheduleListState.copy(loadSchedules = true)
     }
 }
 
-data class ScheduleListState(val schedules: List<AppSchedule> = emptyList())
+data class ScheduleListState(
+    val loadSchedules: Boolean = true,
+    val schedules: List<AppSchedule> = emptyList()
+)

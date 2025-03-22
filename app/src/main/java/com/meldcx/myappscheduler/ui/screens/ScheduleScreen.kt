@@ -103,6 +103,10 @@ fun ScheduleScreen(
         }
     }
 
+    LaunchedEffect(viewModel.scheduleListState.loadSchedules) {
+        viewModel.loadSchedules()
+    }
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
