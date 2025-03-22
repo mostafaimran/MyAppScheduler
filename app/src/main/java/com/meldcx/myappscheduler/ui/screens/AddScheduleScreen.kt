@@ -1,11 +1,9 @@
 package com.meldcx.myappscheduler.ui.screens
 
-import android.content.pm.PackageItemInfo
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
@@ -138,23 +136,6 @@ fun AddScheduleScreen(
                             contentDescription = null
                         )
                     }
-                },
-                actions = {
-                    OutlinedButton(
-                        modifier = Modifier.padding(horizontal = 16.dp),
-                        onClick = {
-                            if (selectedApp != null && selectedTime != null) {
-                                val schedule = AppSchedule(
-                                    selectedApp!!.hashCode(),
-                                    selectedApp!!.packageName,
-                                    selectedTime!!.timeInMillis
-                                )
-                                viewModel.addSchedule(schedule)
-                                onScheduleAdded()
-                            }
-                        }) {
-                        Text(stringResource(R.string.save_schedule))
-                    }
                 }
             )
         }
@@ -165,119 +146,116 @@ fun AddScheduleScreen(
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
-            Column(modifier = Modifier.padding(16.dp)) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically
+            Column(modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)) {
+                Text(
+                    text = stringResource(R.string.selected_app),
+                    style = MaterialTheme.typography.bodyLarge
+                )
+                Spacer(Modifier.height(8.dp))
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .defaultMinSize(minHeight = 60.dp)
+                        .clip(RoundedCornerShape(16.dp))
+                        .border(
+                            1.dp,
+                            MaterialTheme.colorScheme.primary,
+                            RoundedCornerShape(16.dp)
+                        )
+                        .clickable {
+                            showSelection = true
+                        }
+                        .padding(horizontal = 16.dp, vertical = 16.dp),
+                    contentAlignment = Alignment.CenterStart
                 ) {
-                    Text(
-                        text = stringResource(R.string.selected_app),
-                        modifier = Modifier.weight(0.3f),
-                        style = MaterialTheme.typography.bodyLarge
-                    )
-
-                    Row(
-                        modifier = Modifier
-                            .weight(0.7f),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .weight(1f)
-                                .defaultMinSize(minHeight = 60.dp)
-                                .clip(RoundedCornerShape(16.dp))
-                                .border(
-                                    1.dp,
-                                    MaterialTheme.colorScheme.primary,
-                                    RoundedCornerShape(16.dp)
-                                )
-                                .clickable {
-                                    showSelection = true
-                                }
-                                .padding(horizontal = 16.dp, vertical = 16.dp),
-                            contentAlignment = Alignment.CenterStart
-                        ) {
-                            if (selectedApp != null) {
-                                Text(
-                                    text = selectedApp?.name ?: "",
-                                    style = MaterialTheme.typography.titleLarge,
-                                    color = MaterialTheme.colorScheme.primary
-                                )
-                            } else {
-                                Text(
-                                    text = stringResource(R.string.select_an_app),
-                                    style = MaterialTheme.typography.bodyLarge,
-                                    color = MaterialTheme.colorScheme.outlineVariant
-                                )
-                            }
-                        }
-
-                        Button(
-                            modifier = Modifier
-                                .padding(16.dp),
-                            onClick = { showSelection = true })
-                        {
-                            Text(text = stringResource(R.string.select_app))
-                        }
+                    if (selectedApp != null) {
+                        Text(
+                            text = selectedApp?.name ?: "",
+                            style = MaterialTheme.typography.titleLarge,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    } else {
+                        Text(
+                            text = stringResource(R.string.select_an_app),
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = MaterialTheme.colorScheme.outlineVariant
+                        )
                     }
-
+                }
+                OutlinedButton(
+                    modifier = Modifier
+                        .padding(top = 16.dp)
+                        .align(Alignment.End),
+                    onClick = { showSelection = true })
+                {
+                    Text(text = stringResource(R.string.select_app))
                 }
 
                 Spacer(modifier = Modifier.height(24.dp))
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically
+                Text(
+                    text = stringResource(R.string.schedule_time),
+                    style = MaterialTheme.typography.bodyLarge
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .defaultMinSize(minHeight = 60.dp)
+                        .clip(RoundedCornerShape(16.dp))
+                        .border(
+                            1.dp,
+                            MaterialTheme.colorScheme.primary,
+                            RoundedCornerShape(16.dp)
+                        )
+                        .clickable {
+                            showTimeSelection = true
+                        }
+                        .padding(horizontal = 16.dp, vertical = 16.dp),
+                    contentAlignment = Alignment.CenterStart
                 ) {
-                    Text(
-                        text = stringResource(R.string.schedule_time),
-                        modifier = Modifier.weight(0.3f),
-                        style = MaterialTheme.typography.bodyLarge
-                    )
-
-                    Row(
-                        modifier = Modifier
-                            .weight(0.7f),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .weight(1f)
-                                .defaultMinSize(minHeight = 60.dp)
-                                .clip(RoundedCornerShape(16.dp))
-                                .border(
-                                    1.dp,
-                                    MaterialTheme.colorScheme.primary,
-                                    RoundedCornerShape(16.dp)
-                                )
-                                .clickable {
-                                    showTimeSelection = true
-                                }
-                                .padding(horizontal = 16.dp, vertical = 16.dp),
-                            contentAlignment = Alignment.CenterStart
-                        ) {
-                            if (selectedTime != null) {
-                                Text(
-                                    text = selectedTime?.time?.getScheduleTimeFormat() ?: "",
-                                    style = MaterialTheme.typography.titleLarge,
-                                    color = MaterialTheme.colorScheme.primary
-                                )
-                            } else {
-                                Text(
-                                    text = stringResource(R.string.select_a_time),
-                                    style = MaterialTheme.typography.bodyLarge,
-                                    color = MaterialTheme.colorScheme.outlineVariant
-                                )
-                            }
-                        }
-
-                        Button(
-                            modifier = Modifier
-                                .padding(16.dp),
-                            onClick = { showTimeSelection = true }
-                        ) {
-                            Text(text = stringResource(R.string.select_time))
-                        }
+                    if (selectedTime != null) {
+                        Text(
+                            text = selectedTime?.time?.getScheduleTimeFormat() ?: "",
+                            style = MaterialTheme.typography.titleLarge,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    } else {
+                        Text(
+                            text = stringResource(R.string.select_a_time),
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = MaterialTheme.colorScheme.outlineVariant
+                        )
                     }
+                }
+                OutlinedButton(
+                    modifier = Modifier
+                        .padding(top = 16.dp)
+                        .align(Alignment.End),
+                    onClick = { showTimeSelection = true }
+                ) {
+                    Text(text = stringResource(R.string.select_time))
+                }
+
+                Spacer(modifier = Modifier.height(60.dp))
+                Button(
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp)
+                        .align(Alignment.CenterHorizontally),
+                    onClick = {
+                        if (selectedApp != null && selectedTime != null) {
+                            viewModel.addSchedule(
+                                AppSchedule(
+                                    selectedApp!!.hashCode(),
+                                    selectedApp!!.packageName,
+                                    selectedTime!!.timeInMillis
+                                )
+                            )
+                            onScheduleAdded()
+                        }
+                    }) {
+                    Text(stringResource(R.string.save_schedule))
                 }
             }
         }

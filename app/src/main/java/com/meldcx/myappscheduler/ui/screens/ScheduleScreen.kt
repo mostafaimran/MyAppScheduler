@@ -29,8 +29,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
@@ -62,7 +62,7 @@ fun ScheduleScreen(
                 colors = TopAppBarDefaults.largeTopAppBarColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
                 title = {
                     Text(
-                        text = stringResource(R.string.app_name),
+                        text = stringResource(R.string.my_schedules),
                         style = MaterialTheme.typography.headlineSmall
                     )
                 }
@@ -84,14 +84,7 @@ fun ScheduleScreen(
                 .padding(innerPadding),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Spacer(modifier = Modifier.height(24.dp))
-
-            Text(
-                text = stringResource(R.string.my_schedules),
-                style = MaterialTheme.typography.headlineSmall
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            Box {
+            Box(modifier = Modifier.fillMaxSize().padding(16.dp)) {
                 if (schedules.isNotEmpty()) {
                     LazyColumn(modifier = Modifier.padding(16.dp)) {
                         items(schedules) { schedule ->
@@ -130,6 +123,7 @@ fun ScheduleScreen(
                     Text(
                         stringResource(R.string.no_schedule_found),
                         style = MaterialTheme.typography.titleLarge,
+                        textAlign = TextAlign.Center,
                         modifier = Modifier.align(Alignment.Center)
                     )
                 }
