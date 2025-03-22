@@ -1,5 +1,7 @@
 package com.meldcx.myappscheduler.util
 
 object Extras {
-    const val EXTRA_PACKAGE = "PackageName"
+    const val EXTRA_ALARM_ID = "AlarmId"
+    const val EXTRA_PACKAGE_NAME = "PackageName"
+    const val EXTRA_ALARM_TIME = "AlarmTime"
 }

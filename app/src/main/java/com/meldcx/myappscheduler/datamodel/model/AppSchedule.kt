@@ -7,6 +7,7 @@ import androidx.room.PrimaryKey
 data class AppSchedule(
     @PrimaryKey
     val id: Int,
+    val name: String,
     val packageName: String,
     val scheduledTime: Long
 )

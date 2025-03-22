@@ -248,6 +248,7 @@ fun AddScheduleScreen(
                             viewModel.addSchedule(
                                 AppSchedule(
                                     selectedApp!!.hashCode(),
+                                    selectedApp!!.name,
                                     selectedApp!!.packageName,
                                     selectedTime!!.timeInMillis
                                 )

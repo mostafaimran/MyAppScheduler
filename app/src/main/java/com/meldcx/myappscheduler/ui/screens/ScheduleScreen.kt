@@ -84,7 +84,11 @@ fun ScheduleScreen(
                 .padding(innerPadding),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Box(modifier = Modifier.fillMaxSize().padding(16.dp)) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp)
+            ) {
                 if (schedules.isNotEmpty()) {
                     LazyColumn(modifier = Modifier.padding(16.dp)) {
                         items(schedules) { schedule ->
@@ -103,13 +107,16 @@ fun ScheduleScreen(
                                         .padding(16.dp)
                                 ) {
                                     Text(
-                                        text = schedule.packageName,
+                                        text = schedule.name,
                                         modifier = Modifier.align(alignment = Alignment.Center)
                                     )
                                 }
-                                IconButton(onClick = {
-                                    viewModel.cancelSchedule(schedule)
-                                }) {
+                                IconButton(
+                                    onClick = {
+                                        viewModel.cancelSchedule(schedule)
+                                        viewModel.loadSchedules()
+                                    }
+                                ) {
                                     Icon(
                                         imageVector = Icons.Default.Delete,
                                         contentDescription = "delete schedule"

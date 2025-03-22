@@ -3,12 +3,29 @@ package com.meldcx.myappscheduler.receiver
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import com.meldcx.myappscheduler.util.Extras
+import com.meldcx.myappscheduler.util.getAppIntent
+import com.meldcx.myappscheduler.util.setAlarm
+import java.util.Calendar
 
 class AppLaunchReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
-        val packageName = intent?.getStringExtra(Extras.EXTRA_PACKAGE) ?: return
-        val launchIntent = context?.packageManager?.getLaunchIntentForPackage(packageName)
+        Log.d("AppLaunchReceiver", "onReceive")
+
+        val packageName = intent?.getStringExtra(Extras.EXTRA_PACKAGE_NAME) ?: return
+
+        val id = intent.getIntExtra(Extras.EXTRA_ALARM_TIME, -1)
+        val alarmTime = intent.getLongExtra(Extras.EXTRA_ALARM_TIME, -1)
+
+        if (alarmTime != -1L) {
+            val calendar = Calendar.getInstance()
+            calendar.timeInMillis = alarmTime
+            calendar.add(Calendar.DATE, 1)
+            context?.setAlarm(id, packageName, calendar.timeInMillis)
+        }
+
+        val launchIntent = context?.getAppIntent(packageName)
         launchIntent?.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         context?.startActivity(launchIntent)
     }
