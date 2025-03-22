@@ -6,36 +6,33 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import com.meldcx.myappscheduler.R
-import com.meldcx.myappscheduler.datamodel.model.AppSchedule
 
 @Composable
-fun DeleteScheduleDialogScreen(schedule: AppSchedule, onDelete: () -> Unit, onDismiss: () -> Unit) {
+fun ScheduleActionDialogScreen(
+    title: String,
+    message: String,
+    onConfirm: () -> Unit,
+    onDismiss: () -> Unit
+) {
     AlertDialog(
         onDismissRequest = {
             onDismiss()
         },
-        title = { Text(text = stringResource(R.string.delete_schedule)) },
-        text = {
-            Text(
-                text = stringResource(
-                    R.string.delete_schedule_confirm_text,
-                    schedule.name
-                )
-            )
-        },
+        title = { Text(text = title) },
+        text = { Text(text = message) },
         confirmButton = {
             TextButton(
                 onClick = {
-                    onDelete()
+                    onConfirm()
                 }
-            ) { Text(stringResource(R.string.ok)) }
+            ) { Text(stringResource(R.string.yes)) }
         },
         dismissButton = {
             TextButton(
                 onClick = {
                     onDismiss()
                 }
-            ) { Text(stringResource(R.string.cancel)) }
+            ) { Text(stringResource(R.string.no)) }
         }
     )
 }

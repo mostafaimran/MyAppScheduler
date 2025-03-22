@@ -41,8 +41,8 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
 import com.meldcx.myappscheduler.R
 import com.meldcx.myappscheduler.datamodel.model.AppSchedule
+import com.meldcx.myappscheduler.datamodel.model.ScheduleAction
 import com.meldcx.myappscheduler.ui.viewmodel.AppSchedulerViewModel
-import com.meldcx.myappscheduler.ui.viewmodel.DeleteScheduleState
 import com.meldcx.myappscheduler.util.getScheduleTimeFormat
 import java.util.Calendar
 
@@ -55,19 +55,44 @@ fun ScheduleScreen(
     val schedules = viewModel.scheduleListState.schedules
     val lifecycleOwner = LocalLifecycleOwner.current
 
-    val showDeleteScheduleDialog = remember { mutableStateOf<DeleteScheduleState?>(null) }
+    val showDeleteScheduleDialog = remember { mutableStateOf<ScheduleAction.DeleteSchedule?>(null) }
+    val showEditScheduleDialog = remember { mutableStateOf<ScheduleAction.EditSchedule?>(null) }
 
     if (showDeleteScheduleDialog.value?.showDialog == true) {
-        DeleteScheduleDialogScreen(
-            schedule = showDeleteScheduleDialog.value!!.schedule!!,
-            onDelete = {
-                viewModel.cancelSchedule(showDeleteScheduleDialog.value!!.schedule!!)
-                viewModel.loadSchedules()
+        ScheduleActionDialogScreen(
+            title = stringResource(R.string.delete_schedule),
+            message = stringResource(
+                R.string.delete_schedule_confirm_text,
+                showDeleteScheduleDialog.value!!.schedule!!.name
+            ),
+            onConfirm = {
+                showDeleteScheduleDialog.value?.schedule?.let {
+                    viewModel.cancelSchedule(it)
+                    viewModel.loadSchedules()
+                }
 
-                showDeleteScheduleDialog.value = DeleteScheduleState(false, null)
+                showDeleteScheduleDialog.value = ScheduleAction.DeleteSchedule(false, null)
             },
             onDismiss = {
-                showDeleteScheduleDialog.value = DeleteScheduleState(false, null)
+                showDeleteScheduleDialog.value = ScheduleAction.DeleteSchedule(false, null)
+            }
+        )
+    }
+
+    if (showEditScheduleDialog.value?.showDialog == true) {
+        ScheduleActionDialogScreen(
+            title = stringResource(R.string.edit_schedule),
+            message = stringResource(
+                R.string.edit_schedule_confirm_text,
+                showEditScheduleDialog.value!!.schedule!!.name
+            ),
+            onConfirm = {
+                showEditScheduleDialog.value?.schedule?.let { onAddEditSchedule(it) }
+
+                showEditScheduleDialog.value = ScheduleAction.EditSchedule(false, null)
+            },
+            onDismiss = {
+                showEditScheduleDialog.value = ScheduleAction.EditSchedule(false, null)
             }
         )
     }
@@ -128,7 +153,11 @@ fun ScheduleScreen(
                                             RoundedCornerShape(16.dp)
                                         )
                                         .clickable {
-                                            onAddEditSchedule(schedule)
+                                            showEditScheduleDialog.value =
+                                                ScheduleAction.EditSchedule(
+                                                    showDialog = true,
+                                                    schedule = schedule
+                                                )
                                         }
                                         .padding(16.dp)
                                 ) {
@@ -150,7 +179,7 @@ fun ScheduleScreen(
                                 IconButton(
                                     onClick = {
                                         showDeleteScheduleDialog.value =
-                                            DeleteScheduleState(true, schedule)
+                                            ScheduleAction.DeleteSchedule(true, schedule)
                                     }
                                 ) {
                                     Icon(
