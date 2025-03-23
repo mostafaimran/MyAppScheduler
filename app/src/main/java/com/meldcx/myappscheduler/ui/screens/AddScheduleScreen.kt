@@ -54,6 +54,7 @@ fun AddScheduleScreen(
     onScheduleAdded: (AppSchedule) -> Unit,
 ) {
 
+    val id = viewModel.scheduleState.id
     val selectedApp = viewModel.scheduleState.selectedApp
     val selectedTime = viewModel.scheduleState.selectedTime
     val repeatDaily = viewModel.scheduleState.repeatDaily
@@ -262,7 +263,7 @@ fun AddScheduleScreen(
                     onClick = {
                         if (selectedApp != null && selectedTime != null) {
                             val schedule = AppSchedule(
-                                selectedApp.hashCode(),
+                                id,
                                 selectedApp.name,
                                 selectedApp.packageName,
                                 selectedTime.timeInMillis,

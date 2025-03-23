@@ -14,6 +14,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.Calendar
 import javax.inject.Inject
+import kotlin.random.Random
 
 @HiltViewModel
 class AddScheduleViewModel @Inject constructor(
@@ -44,6 +45,7 @@ class AddScheduleViewModel @Inject constructor(
     private fun updateScheduleAppInfo(appSchedule: AppSchedule) {
         viewModelScope.launch(Dispatchers.IO) {
             scheduleState = scheduleState.copy(
+                id = appSchedule.id,
                 selectedApp = getAppInfo(packageName = appSchedule.packageName),
                 selectedTime = Calendar.getInstance()
                     .apply { timeInMillis = appSchedule.scheduledTime },
@@ -66,6 +68,7 @@ class AddScheduleViewModel @Inject constructor(
 }
 
 data class AddScheduleState(
+    val id: Int = Random.nextInt(),
     val selectedApp: AppInfo? = null,
     val selectedTime: Calendar? = null,
     val repeatDaily: Boolean = false,
