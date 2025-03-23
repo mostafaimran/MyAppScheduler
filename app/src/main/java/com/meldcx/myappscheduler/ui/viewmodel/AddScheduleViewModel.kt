@@ -5,12 +5,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.meldcx.myappscheduler.datamodel.model.AppInfo
 import com.meldcx.myappscheduler.datamodel.model.AppSchedule
 import com.meldcx.myappscheduler.datamodel.repository.AppInfoRepository
 import com.meldcx.myappscheduler.datamodel.repository.AppSchedulerRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.Calendar
 import javax.inject.Inject
 
 @HiltViewModel
@@ -25,7 +27,9 @@ class AddScheduleViewModel @Inject constructor(
     fun loadSchedule(id: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             val schedule = appScheduleRepository.getSchedule(id)
-            scheduleState = scheduleState.copy(schedule = schedule)
+            if (schedule != null) {
+                updateScheduleAppInfo(schedule)
+            }
         }
     }
 
@@ -36,6 +40,33 @@ class AddScheduleViewModel @Inject constructor(
     fun getAppInfo(packageName: String) = appInfoRepository.getAppInfo(packageName)
 
     fun getAllInstalledApps() = appInfoRepository.getUserInstalledApps()
+
+    private fun updateScheduleAppInfo(appSchedule: AppSchedule) {
+        viewModelScope.launch(Dispatchers.IO) {
+            scheduleState = scheduleState.copy(
+                selectedApp = getAppInfo(packageName = appSchedule.packageName),
+                selectedTime = Calendar.getInstance()
+                    .apply { timeInMillis = appSchedule.scheduledTime },
+                repeatDaily = appSchedule.repeatDaily
+            )
+        }
+    }
+
+    fun updateSelectedApp(appInfo: AppInfo) {
+        scheduleState = scheduleState.copy(selectedApp = appInfo)
+    }
+
+    fun updateSelectedTime(calendar: Calendar) {
+        scheduleState = scheduleState.copy(selectedTime = calendar)
+    }
+
+    fun updateRepeatDaily(repeatDaily: Boolean) {
+        scheduleState = scheduleState.copy(repeatDaily = repeatDaily)
+    }
 }
 
-data class AddScheduleState(val schedule: AppSchedule? = null)
+data class AddScheduleState(
+    val selectedApp: AppInfo? = null,
+    val selectedTime: Calendar? = null,
+    val repeatDaily: Boolean = false,
+)

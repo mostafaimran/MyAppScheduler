@@ -28,6 +28,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -39,7 +40,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.meldcx.myappscheduler.R
-import com.meldcx.myappscheduler.datamodel.model.AppInfo
 import com.meldcx.myappscheduler.datamodel.model.AppSchedule
 import com.meldcx.myappscheduler.ui.viewmodel.AddScheduleViewModel
 import com.meldcx.myappscheduler.util.getScheduleTimeFormat
@@ -51,34 +51,27 @@ fun AddScheduleScreen(
     viewModel: AddScheduleViewModel = hiltViewModel(),
     editedScheduleId: Int?,
     onBack: () -> Unit,
-    onScheduleAdded: () -> Unit,
+    onScheduleAdded: (AppSchedule) -> Unit,
 ) {
 
-    val schedule = viewModel.scheduleState.schedule
+    val selectedApp = viewModel.scheduleState.selectedApp
+    val selectedTime = viewModel.scheduleState.selectedTime
+    val repeatDaily = viewModel.scheduleState.repeatDaily
 
-    var selectedApp by remember { mutableStateOf<AppInfo?>(null) }
-    var selectedTime by remember { mutableStateOf<Calendar?>(null) }
     var showSelection by remember { mutableStateOf(false) }
     var showTimeSelection by remember { mutableStateOf(false) }
-    var repeatDaily by remember { mutableStateOf(false) }
 
-    val calendar = Calendar.getInstance()
-    if (schedule != null) {
-        selectedApp = viewModel.getAppInfo(packageName = schedule.packageName)
-
-        calendar.timeInMillis = schedule.scheduledTime
-        selectedTime = calendar
-        repeatDaily = schedule.repeatDaily
+    LaunchedEffect(key1 = Unit) {
+        if (editedScheduleId != null) {
+            viewModel.loadSchedule(editedScheduleId)
+        }
     }
 
+    val calendar = selectedTime ?: Calendar.getInstance()
     val timePickerState = rememberTimePickerState(
         calendar.get(Calendar.HOUR_OF_DAY),
         calendar.get(Calendar.MINUTE)
     )
-
-    if (editedScheduleId != null) {
-        viewModel.loadSchedule(editedScheduleId)
-    }
 
     if (showSelection) {
         AppSelectionScreen(
@@ -86,7 +79,7 @@ fun AddScheduleScreen(
             onDismiss = {
                 showSelection = false
             }, onSelectedApp = {
-                selectedApp = it
+                viewModel.updateSelectedApp(it)
                 showSelection = false
             }
         )
@@ -100,12 +93,14 @@ fun AddScheduleScreen(
                     onClick = {
                         showTimeSelection = false
 
-                        selectedTime = Calendar.getInstance().apply {
+                        val time = Calendar.getInstance().apply {
                             set(Calendar.HOUR_OF_DAY, timePickerState.hour)
                             set(Calendar.MINUTE, timePickerState.minute)
                             set(Calendar.SECOND, 0)
                             set(Calendar.MILLISECOND, 0)
                         }
+
+                        viewModel.updateSelectedTime(time)
                     }
                 ) { Text(stringResource(R.string.ok)) }
             },
@@ -180,7 +175,7 @@ fun AddScheduleScreen(
                 ) {
                     if (selectedApp != null) {
                         Text(
-                            text = selectedApp?.name ?: "",
+                            text = selectedApp.name,
                             style = MaterialTheme.typography.titleLarge,
                             color = MaterialTheme.colorScheme.primary
                         )
@@ -225,7 +220,7 @@ fun AddScheduleScreen(
                 ) {
                     if (selectedTime != null) {
                         Text(
-                            text = selectedTime?.time?.getScheduleTimeFormat() ?: "",
+                            text = selectedTime.time.getScheduleTimeFormat(),
                             style = MaterialTheme.typography.titleLarge,
                             color = MaterialTheme.colorScheme.primary
                         )
@@ -252,9 +247,12 @@ fun AddScheduleScreen(
                     style = MaterialTheme.typography.bodyLarge
                 )
                 Spacer(modifier = Modifier.height(8.dp))
-                Switch(repeatDaily, onCheckedChange = {
-                    repeatDaily = it
-                })
+                Switch(
+                    repeatDaily,
+                    onCheckedChange = {
+                        viewModel.updateRepeatDaily(it)
+                    }
+                )
 
                 Spacer(modifier = Modifier.height(60.dp))
                 Button(
@@ -263,16 +261,15 @@ fun AddScheduleScreen(
                         .align(Alignment.CenterHorizontally),
                     onClick = {
                         if (selectedApp != null && selectedTime != null) {
-                            viewModel.addSchedule(
-                                AppSchedule(
-                                    selectedApp!!.hashCode(),
-                                    selectedApp!!.name,
-                                    selectedApp!!.packageName,
-                                    selectedTime!!.timeInMillis,
-                                    repeatDaily
-                                )
+                            val schedule = AppSchedule(
+                                selectedApp.hashCode(),
+                                selectedApp.name,
+                                selectedApp.packageName,
+                                selectedTime.timeInMillis,
+                                repeatDaily
                             )
-                            onScheduleAdded()
+                            viewModel.addSchedule(schedule)
+                            onScheduleAdded(schedule)
                         }
                     }) {
                     Text(stringResource(R.string.save_schedule))

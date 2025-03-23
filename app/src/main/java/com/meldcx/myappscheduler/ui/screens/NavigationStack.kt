@@ -30,14 +30,16 @@ fun NavigationStack() {
                 editedScheduleId = args.id,
                 onBack = {
                     navController.popBackStack()
-                }) {
-                navController.popBackStack()
-
+                }
+            ) { schedule ->
                 Toast.makeText(
                     context,
-                    context.getString(R.string.app_schedule_saved),
+                    context.getString(R.string.app_schedule_saved, schedule.name),
                     Toast.LENGTH_SHORT
                 ).show()
+
+                navController.popBackStack()
+
             }
         }
     }

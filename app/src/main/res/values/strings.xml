@@ -22,6 +22,6 @@
     <string name="daily">Daily</string>
     <string name="hour">Hour: %d</string>
     <string name="minute">Minute: %d</string>
-    <string name="app_schedule_saved">App schedule saved successfully</string>
+    <string name="app_schedule_saved">App schedule for %s saved successfully</string>
     <string name="no_schedule_found">No schedules found. Create schedule by clicking + icon</string>
 </resources>
