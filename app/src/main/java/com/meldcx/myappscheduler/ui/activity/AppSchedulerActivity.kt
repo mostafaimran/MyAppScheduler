@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import com.google.accompanist.adaptive.calculateDisplayFeatures
 import com.meldcx.myappscheduler.ui.screens.NavigationStack
 import com.meldcx.myappscheduler.ui.theme.MyAppSchedulerTheme
 import dagger.hilt.android.AndroidEntryPoint

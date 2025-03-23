@@ -14,7 +14,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -49,7 +48,7 @@ import java.util.Calendar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ScheduleScreen(
+fun SchedulesScreen(
     viewModel: AppSchedulerViewModel = hiltViewModel(),
     onAddEditSchedule: (schedule: AppSchedule?) -> Unit,
 ) {
@@ -107,111 +106,85 @@ fun ScheduleScreen(
     LaunchedEffect(viewModel.scheduleListState.loadSchedules) {
         viewModel.loadSchedules()
     }
-
-    Scaffold(
-        modifier = Modifier.fillMaxSize(),
-        topBar = {
-            TopAppBar(
-                colors = TopAppBarDefaults.largeTopAppBarColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
-                title = {
-                    Text(
-                        text = stringResource(R.string.my_schedules),
-                        style = MaterialTheme.typography.headlineSmall
-                    )
-                }
-            )
-        },
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = {
-                    onAddEditSchedule(null)
-                }
-            ) {
-                Icon(imageVector = Icons.Default.Notifications, contentDescription = "add schedule")
-            }
-        }) { innerPadding ->
-
-        Column(
+    Column(
+        modifier = Modifier
+            .fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding),
-            horizontalAlignment = Alignment.CenterHorizontally
+                .padding(16.dp)
         ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(16.dp)
-            ) {
-                if (schedules.isNotEmpty()) {
-                    LazyColumn(modifier = Modifier.padding(16.dp)) {
-                        items(schedules) { schedule ->
-                            val calendar = Calendar.getInstance()
-                            calendar.timeInMillis = schedule.scheduledTime
+            if (schedules.isNotEmpty()) {
+                LazyColumn(modifier = Modifier.padding(16.dp)) {
+                    items(schedules) { schedule ->
+                        val calendar = Calendar.getInstance()
+                        calendar.timeInMillis = schedule.scheduledTime
 
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                Column(
-                                    modifier = Modifier
-                                        .weight(1f)
-                                        .clip(RoundedCornerShape(16.dp))
-                                        .border(
-                                            1.dp,
-                                            MaterialTheme.colorScheme.primary,
-                                            RoundedCornerShape(16.dp)
-                                        )
-                                        .clickable {
-                                            showEditScheduleDialog.value =
-                                                ScheduleAction.EditSchedule(
-                                                    showDialog = true,
-                                                    schedule = schedule
-                                                )
-                                        }
-                                        .padding(16.dp)
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Column(
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .clip(RoundedCornerShape(16.dp))
+                                    .border(
+                                        1.dp,
+                                        MaterialTheme.colorScheme.primary,
+                                        RoundedCornerShape(16.dp)
+                                    )
+                                    .clickable {
+                                        showEditScheduleDialog.value =
+                                            ScheduleAction.EditSchedule(
+                                                showDialog = true,
+                                                schedule = schedule
+                                            )
+                                    }
+                                    .padding(16.dp)
+                            ) {
+                                Text(
+                                    text = schedule.name,
+                                    style = MaterialTheme.typography.titleLarge
+                                )
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.SpaceBetween
                                 ) {
                                     Text(
-                                        text = schedule.name,
-                                        style = MaterialTheme.typography.titleLarge
+                                        text = calendar.time.getScheduleTimeFormat(),
+                                        style = MaterialTheme.typography.titleSmall
                                     )
-                                    Row(
-                                        verticalAlignment = Alignment.CenterVertically,
-                                        horizontalArrangement = Arrangement.SpaceBetween
-                                    ) {
+                                    if (schedule.repeatDaily) {
+                                        Text(text = " | ")
                                         Text(
-                                            text = calendar.time.getScheduleTimeFormat(),
+                                            text = stringResource(R.string.daily),
                                             style = MaterialTheme.typography.titleSmall
                                         )
-                                        if (schedule.repeatDaily) {
-                                            Text(text = " | ")
-                                            Text(
-                                                text = stringResource(R.string.daily),
-                                                style = MaterialTheme.typography.titleSmall
-                                            )
-                                        }
                                     }
+                                }
 
-                                }
-                                IconButton(
-                                    onClick = {
-                                        showDeleteScheduleDialog.value =
-                                            ScheduleAction.DeleteSchedule(true, schedule)
-                                    }
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.Default.Delete,
-                                        contentDescription = "delete schedule"
-                                    )
-                                }
                             }
-                            Spacer(modifier = Modifier.height(16.dp))
+                            IconButton(
+                                onClick = {
+                                    showDeleteScheduleDialog.value =
+                                        ScheduleAction.DeleteSchedule(true, schedule)
+                                }
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Delete,
+                                    contentDescription = "delete schedule"
+                                )
+                            }
                         }
+                        Spacer(modifier = Modifier.height(16.dp))
                     }
-                } else {
-                    Text(
-                        stringResource(R.string.no_schedule_found),
-                        style = MaterialTheme.typography.titleLarge,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.align(Alignment.Center)
-                    )
                 }
+            } else {
+                Text(
+                    stringResource(R.string.no_schedule_found),
+                    style = MaterialTheme.typography.titleLarge,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.align(Alignment.Center)
+                )
             }
         }
     }

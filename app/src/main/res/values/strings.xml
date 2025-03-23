@@ -9,7 +9,8 @@
     <string name="select_time">Select Time</string>
     <string name="schedule_app">Schedule App</string>
     <string name="save_schedule">Save Schedule</string>
-    <string name="my_schedules">My Schedules</string>
+    <string name="schedules">Schedules</string>
+    <string name="events">Events</string>
     <string name="edit_schedule">Edit Confirmation</string>
     <string name="edit_schedule_confirm_text">Do you want to edit schedule for %s?</string>
     <string name="delete_schedule">Delete Confirmation</string>
@@ -24,4 +25,5 @@
     <string name="minute">Minute: %d</string>
     <string name="app_schedule_saved">App schedule for %s saved successfully</string>
     <string name="no_schedule_found">No schedules found. Create schedule by clicking + icon</string>
+    <string name="no_events_found">No events found</string>
 </resources>

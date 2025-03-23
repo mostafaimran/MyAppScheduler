@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AppSchedulerViewModel @Inject constructor(
-    private val repository: AppSchedulerRepository
+    private val repository: AppSchedulerRepository,
 ) : ViewModel() {
 
     var scheduleListState by mutableStateOf(ScheduleListState())
@@ -43,5 +43,5 @@ class AppSchedulerViewModel @Inject constructor(
 
 data class ScheduleListState(
     val loadSchedules: Boolean = true,
-    val schedules: List<AppSchedule> = emptyList()
+    val schedules: List<AppSchedule> = emptyList(),
 )

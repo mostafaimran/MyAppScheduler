@@ -18,7 +18,7 @@ fun NavigationStack() {
 
     NavHost(navController = navController, startDestination = Screen.Schedules) {
         composable<Screen.Schedules> {
-            ScheduleScreen {
+            HomeScreen {
                 navController.navigate(Screen.AddSchedule(it?.id))
             }
         }
