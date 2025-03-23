@@ -117,7 +117,7 @@ fun SchedulesScreen(
                 .padding(16.dp)
         ) {
             if (schedules.isNotEmpty()) {
-                LazyColumn(modifier = Modifier.padding(16.dp)) {
+                LazyColumn(modifier = Modifier.padding(horizontal = 16.dp)) {
                     items(schedules) { schedule ->
                         val calendar = Calendar.getInstance()
                         calendar.timeInMillis = schedule.scheduledTime

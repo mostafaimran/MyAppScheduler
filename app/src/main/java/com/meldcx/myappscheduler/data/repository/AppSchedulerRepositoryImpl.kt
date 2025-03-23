@@ -1,5 +1,6 @@
 package com.meldcx.myappscheduler.data.repository
 
+import com.meldcx.myappscheduler.data.dao.AppEventDao
 import com.meldcx.myappscheduler.data.dao.AppScheduleDao
 import com.meldcx.myappscheduler.datamodel.model.AppSchedule
 import com.meldcx.myappscheduler.datamodel.repository.AppAlarmRepository
@@ -7,7 +8,8 @@ import com.meldcx.myappscheduler.datamodel.repository.AppSchedulerRepository
 import javax.inject.Inject
 
 class AppSchedulerRepositoryImpl @Inject constructor(
-    private val dao: AppScheduleDao,
+    private val appScheduleDao: AppScheduleDao,
+    private val appEventDao: AppEventDao,
     private val alarmRepository: AppAlarmRepository,
 ) : AppSchedulerRepository {
 
@@ -18,17 +20,18 @@ class AppSchedulerRepositoryImpl @Inject constructor(
             schedule.scheduledTime,
             schedule.repeatDaily
         )
-        dao.insertSchedule(schedule)
+        appScheduleDao.insertSchedule(schedule)
     }
 
     override fun cancelSchedule(schedule: AppSchedule) {
         alarmRepository.cancelAlarm(schedule)
-        dao.deleteSchedule(schedule)
+        appScheduleDao.deleteSchedule(schedule)
+        appEventDao.deleteEventsByScheduleId(schedule.id)
     }
 
-    override fun getAllSchedules() = dao.getAllSchedules()
+    override fun getAllSchedules() = appScheduleDao.getAllSchedules()
 
     override fun getSchedule(id: Int): AppSchedule? {
-        return dao.getSchedule(id)
+        return appScheduleDao.getSchedule(id)
     }
 }

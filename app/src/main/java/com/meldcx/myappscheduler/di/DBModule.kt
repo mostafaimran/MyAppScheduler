@@ -2,6 +2,7 @@ package com.meldcx.myappscheduler.di
 
 import android.content.Context
 import androidx.room.Room
+import com.meldcx.myappscheduler.data.dao.AppEventDao
 import com.meldcx.myappscheduler.data.dao.AppScheduleDao
 import com.meldcx.myappscheduler.data.db.AppDatabase
 import com.meldcx.myappscheduler.util.Constants
@@ -19,7 +20,7 @@ class DBModule {
     @Singleton
     @Provides
     fun provideDB(
-        @ApplicationContext application: Context
+        @ApplicationContext application: Context,
     ): AppDatabase {
         return Room.databaseBuilder(
             application,
@@ -31,6 +32,11 @@ class DBModule {
     @Provides
     fun providesAppScheduleDao(parameter: AppDatabase): AppScheduleDao {
         return parameter.getAppScheduleDao()
+    }
+
+    @Provides
+    fun providesAppEventDao(parameter: AppDatabase): AppEventDao {
+        return parameter.getAppEventDao()
     }
 
 }

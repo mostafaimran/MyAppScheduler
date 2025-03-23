@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "42a50af6d987edc78abd98e0f5c4626d",
+    "identityHash": "87327e9cbddff1930262e2a8b8930daf",
     "entities": [
       {
         "tableName": "AppSchedule",
@@ -47,12 +47,44 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "AppEvent",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `scheduleId` INTEGER NOT NULL, `logTime` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "scheduleId",
+            "columnName": "scheduleId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "logTime",
+            "columnName": "logTime",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '42a50af6d987edc78abd98e0f5c4626d')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '87327e9cbddff1930262e2a8b8930daf')"
     ]
   }
 }

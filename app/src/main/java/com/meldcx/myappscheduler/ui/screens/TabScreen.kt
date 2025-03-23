@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
@@ -131,7 +132,7 @@ fun HomeTabScreen(
                             }
                         ) {
                             Icon(
-                                imageVector = Icons.Default.Notifications,
+                                imageVector = Icons.Default.Add,
                                 contentDescription = "add schedule"
                             )
                         }

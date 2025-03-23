@@ -4,9 +4,11 @@ import android.app.AlarmManager
 import android.content.Context
 import android.content.pm.PackageManager
 import com.meldcx.myappscheduler.data.repository.AppAlarmRepositoryImpl
+import com.meldcx.myappscheduler.data.repository.AppEventRepositoryImpl
 import com.meldcx.myappscheduler.data.repository.AppInfoRepositoryImpl
 import com.meldcx.myappscheduler.data.repository.AppSchedulerRepositoryImpl
 import com.meldcx.myappscheduler.datamodel.repository.AppAlarmRepository
+import com.meldcx.myappscheduler.datamodel.repository.AppEventRepository
 import com.meldcx.myappscheduler.datamodel.repository.AppInfoRepository
 import com.meldcx.myappscheduler.datamodel.repository.AppSchedulerRepository
 import dagger.Module
@@ -45,6 +47,11 @@ class AppModule {
     @Provides
     fun provideAppInfoRepository(appInfoRepositoryImpl: AppInfoRepositoryImpl): AppInfoRepository =
         appInfoRepositoryImpl
+
+    @Singleton
+    @Provides
+    fun provideEventRepository(appEventRepository: AppEventRepositoryImpl): AppEventRepository =
+        appEventRepository
 
     @Singleton
     @Provides
