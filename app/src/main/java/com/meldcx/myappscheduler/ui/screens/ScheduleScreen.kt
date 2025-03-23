@@ -179,6 +179,13 @@ fun ScheduleScreen(
                                             text = calendar.time.getScheduleTimeFormat(),
                                             style = MaterialTheme.typography.titleSmall
                                         )
+                                        if (schedule.repeatDaily) {
+                                            Text(text = " | ")
+                                            Text(
+                                                text = stringResource(R.string.daily),
+                                                style = MaterialTheme.typography.titleSmall
+                                            )
+                                        }
                                     }
                                 }
                                 IconButton(

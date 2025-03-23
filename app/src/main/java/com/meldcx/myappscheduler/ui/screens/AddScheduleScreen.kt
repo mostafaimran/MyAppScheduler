@@ -20,6 +20,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TimePicker
@@ -59,6 +60,7 @@ fun AddScheduleScreen(
     var selectedTime by remember { mutableStateOf<Calendar?>(null) }
     var showSelection by remember { mutableStateOf(false) }
     var showTimeSelection by remember { mutableStateOf(false) }
+    var repeatDaily by remember { mutableStateOf(false) }
 
     val calendar = Calendar.getInstance()
     if (schedule != null) {
@@ -66,6 +68,7 @@ fun AddScheduleScreen(
 
         calendar.timeInMillis = schedule.scheduledTime
         selectedTime = calendar
+        repeatDaily = schedule.repeatDaily
     }
 
     val timePickerState = rememberTimePickerState(
@@ -243,6 +246,16 @@ fun AddScheduleScreen(
                     Text(text = stringResource(R.string.select_time))
                 }
 
+                Spacer(modifier = Modifier.height(24.dp))
+                Text(
+                    text = stringResource(R.string.repeat_daily),
+                    style = MaterialTheme.typography.bodyLarge
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Switch(repeatDaily, onCheckedChange = {
+                    repeatDaily = it
+                })
+
                 Spacer(modifier = Modifier.height(60.dp))
                 Button(
                     modifier = Modifier
@@ -255,7 +268,8 @@ fun AddScheduleScreen(
                                     selectedApp!!.hashCode(),
                                     selectedApp!!.name,
                                     selectedApp!!.packageName,
-                                    selectedTime!!.timeInMillis
+                                    selectedTime!!.timeInMillis,
+                                    repeatDaily
                                 )
                             )
                             onScheduleAdded()

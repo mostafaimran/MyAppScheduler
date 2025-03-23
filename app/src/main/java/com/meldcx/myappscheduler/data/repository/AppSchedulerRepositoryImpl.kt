@@ -12,7 +12,12 @@ class AppSchedulerRepositoryImpl @Inject constructor(
 ) : AppSchedulerRepository {
 
     override fun scheduleApp(schedule: AppSchedule) {
-        alarmRepository.setAlarm(schedule.id, schedule.packageName, schedule.scheduledTime)
+        alarmRepository.setAlarm(
+            schedule.id,
+            schedule.packageName,
+            schedule.scheduledTime,
+            schedule.repeatDaily
+        )
         dao.insertSchedule(schedule)
     }
 

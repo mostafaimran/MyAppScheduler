@@ -24,12 +24,13 @@ class AppLaunchReceiver : BroadcastReceiver() {
 
         val id = intent.getIntExtra(Extras.EXTRA_ALARM_ID, -1)
         val alarmTime = intent.getLongExtra(Extras.EXTRA_ALARM_TIME, -1)
+        val repeatDaily = intent.getBooleanExtra(Extras.EXTRA_REPEAT_DAILY, false)
 
-        if (alarmTime != -1L) {
+        if (alarmTime != -1L && repeatDaily) {
             val calendar = Calendar.getInstance()
             calendar.timeInMillis = alarmTime
             calendar.add(Calendar.DATE, 1)
-            alarmRepository.setAlarm(id, packageName, calendar.timeInMillis)
+            alarmRepository.setAlarm(id, packageName, calendar.timeInMillis, true)
         }
 
         Log.d(TAG, "onReceive $packageName at ${Calendar.getInstance().time}")

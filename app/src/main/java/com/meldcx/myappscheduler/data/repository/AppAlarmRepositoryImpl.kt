@@ -23,11 +23,12 @@ class AppAlarmRepositoryImpl @Inject constructor(
         private const val TAG = "AppAlarmRepositoryImpl"
     }
 
-    override fun setAlarm(id: Int, packageName: String, scheduledTime: Long) {
+    override fun setAlarm(id: Int, packageName: String, scheduledTime: Long, repeatDaily: Boolean) {
         val intent = Intent(context, AppLaunchReceiver::class.java).apply {
             putExtra(Extras.EXTRA_ALARM_ID, id)
             putExtra(Extras.EXTRA_PACKAGE_NAME, packageName)
             putExtra(Extras.EXTRA_ALARM_TIME, scheduledTime)
+            putExtra(Extras.EXTRA_REPEAT_DAILY, repeatDaily)
         }
         val pendingIntent = PendingIntent.getBroadcast(
             context, id, intent, PendingIntent.FLAG_UPDATE_CURRENT.getWithMutability()
