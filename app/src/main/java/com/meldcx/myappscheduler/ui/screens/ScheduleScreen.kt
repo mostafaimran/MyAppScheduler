@@ -149,8 +149,9 @@ fun ScheduleScreen(
                             calendar.timeInMillis = schedule.scheduledTime
 
                             Row(verticalAlignment = Alignment.CenterVertically) {
-                                Box(
+                                Column(
                                     modifier = Modifier
+                                        .weight(1f)
                                         .clip(RoundedCornerShape(16.dp))
                                         .border(
                                             1.dp,
@@ -166,15 +167,14 @@ fun ScheduleScreen(
                                         }
                                         .padding(16.dp)
                                 ) {
+                                    Text(
+                                        text = schedule.name,
+                                        style = MaterialTheme.typography.titleLarge
+                                    )
                                     Row(
                                         verticalAlignment = Alignment.CenterVertically,
                                         horizontalArrangement = Arrangement.SpaceBetween
                                     ) {
-                                        Text(
-                                            text = schedule.name,
-                                            style = MaterialTheme.typography.titleLarge
-                                        )
-                                        Text(text = " | ")
                                         Text(
                                             text = calendar.time.getScheduleTimeFormat(),
                                             style = MaterialTheme.typography.titleSmall
@@ -187,6 +187,7 @@ fun ScheduleScreen(
                                             )
                                         }
                                     }
+
                                 }
                                 IconButton(
                                     onClick = {
