@@ -34,7 +34,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -42,7 +41,6 @@ import com.meldcx.myappscheduler.R
 import com.meldcx.myappscheduler.datamodel.model.AppInfo
 import com.meldcx.myappscheduler.datamodel.model.AppSchedule
 import com.meldcx.myappscheduler.ui.viewmodel.AddScheduleViewModel
-import com.meldcx.myappscheduler.util.getAppInfo
 import com.meldcx.myappscheduler.util.getScheduleTimeFormat
 import java.util.Calendar
 
@@ -64,7 +62,7 @@ fun AddScheduleScreen(
 
     val calendar = Calendar.getInstance()
     if (schedule != null) {
-        selectedApp = LocalContext.current.getAppInfo(packageName = schedule.packageName)
+        selectedApp = viewModel.getAppInfo(packageName = schedule.packageName)
 
         calendar.timeInMillis = schedule.scheduledTime
         selectedTime = calendar
@@ -81,6 +79,7 @@ fun AddScheduleScreen(
 
     if (showSelection) {
         AppSelectionScreen(
+            viewModel.getAllInstalledApps(),
             onDismiss = {
                 showSelection = false
             }, onSelectedApp = {

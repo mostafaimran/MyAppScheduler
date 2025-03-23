@@ -18,17 +18,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.meldcx.myappscheduler.datamodel.model.AppInfo
-import com.meldcx.myappscheduler.util.getUserInstalledApps
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppSelectionScreen(onDismiss: () -> Unit, onSelectedApp: (AppInfo) -> Unit) {
-    val context = LocalContext.current
-    val installedApps = context.getUserInstalledApps()
-
+fun AppSelectionScreen(
+    installedApps: List<AppInfo>,
+    onDismiss: () -> Unit,
+    onSelectedApp: (AppInfo) -> Unit,
+) {
     ModalBottomSheet(
         onDismissRequest = {
             onDismiss()

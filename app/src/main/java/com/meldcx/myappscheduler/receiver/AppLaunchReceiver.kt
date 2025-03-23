@@ -6,7 +6,6 @@ import android.content.Intent
 import android.util.Log
 import com.meldcx.myappscheduler.datamodel.repository.AppAlarmRepository
 import com.meldcx.myappscheduler.util.Extras
-import com.meldcx.myappscheduler.util.getAppIntent
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Calendar
 import javax.inject.Inject
@@ -35,7 +34,7 @@ class AppLaunchReceiver : BroadcastReceiver() {
 
         Log.d(TAG, "onReceive $packageName at ${Calendar.getInstance().time}")
 
-        val launchIntent = context?.getAppIntent(packageName)
+        val launchIntent = context?.packageManager?.getLaunchIntentForPackage(packageName)
         launchIntent?.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         context?.startActivity(launchIntent)
     }
