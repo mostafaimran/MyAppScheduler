@@ -1,25 +1,23 @@
 package com.meldcx.myappscheduler.data.repository
 
-import android.content.Context
 import com.meldcx.myappscheduler.data.dao.AppScheduleDao
 import com.meldcx.myappscheduler.datamodel.model.AppSchedule
+import com.meldcx.myappscheduler.datamodel.repository.AppAlarmRepository
 import com.meldcx.myappscheduler.datamodel.repository.AppSchedulerRepository
-import com.meldcx.myappscheduler.util.cancelAlarm
-import com.meldcx.myappscheduler.util.setAlarm
 import javax.inject.Inject
 
 class AppSchedulerRepositoryImpl @Inject constructor(
-    private val context: Context,
     private val dao: AppScheduleDao,
+    private val alarmRepository: AppAlarmRepository,
 ) : AppSchedulerRepository {
 
     override fun scheduleApp(schedule: AppSchedule) {
-        context.setAlarm(schedule.id, schedule.packageName, schedule.scheduledTime)
+        alarmRepository.setAlarm(schedule.id, schedule.packageName, schedule.scheduledTime)
         dao.insertSchedule(schedule)
     }
 
     override fun cancelSchedule(schedule: AppSchedule) {
-        context.cancelAlarm(schedule)
+        alarmRepository.cancelAlarm(schedule)
         dao.deleteSchedule(schedule)
     }
 

@@ -52,7 +52,7 @@ fun AddScheduleScreen(
     viewModel: AddScheduleViewModel = hiltViewModel(),
     editedScheduleId: Int?,
     onBack: () -> Unit,
-    onScheduleAdded: () -> Unit
+    onScheduleAdded: () -> Unit,
 ) {
 
     val schedule = viewModel.scheduleState.schedule
@@ -61,15 +61,19 @@ fun AddScheduleScreen(
     var selectedTime by remember { mutableStateOf<Calendar?>(null) }
     var showSelection by remember { mutableStateOf(false) }
     var showTimeSelection by remember { mutableStateOf(false) }
-    val timePickerState = rememberTimePickerState()
 
+    val calendar = Calendar.getInstance()
     if (schedule != null) {
         selectedApp = LocalContext.current.getAppInfo(packageName = schedule.packageName)
-        selectedTime = Calendar.getInstance().apply { timeInMillis = schedule.scheduledTime }
 
-        timePickerState.hour = selectedTime!!.get(Calendar.HOUR_OF_DAY)
-        timePickerState.minute = selectedTime!!.get(Calendar.MINUTE)
+        calendar.timeInMillis = schedule.scheduledTime
+        selectedTime = calendar
     }
+
+    val timePickerState = rememberTimePickerState(
+        calendar.get(Calendar.HOUR_OF_DAY),
+        calendar.get(Calendar.MINUTE)
+    )
 
     if (editedScheduleId != null) {
         viewModel.loadSchedule(editedScheduleId)
