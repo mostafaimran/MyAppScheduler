@@ -1,19 +1,21 @@
 package com.meldcx.myappscheduler.ui.activity
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.ComponentActivity
 import com.meldcx.myappscheduler.datamodel.model.AppEvent
 import com.meldcx.myappscheduler.datamodel.repository.AppAlarmRepository
 import com.meldcx.myappscheduler.datamodel.repository.AppEventRepository
 import com.meldcx.myappscheduler.util.Extras
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.Calendar
 import javax.inject.Inject
 
-class AlarmTriggerActivity: Activity() {
+@AndroidEntryPoint
+class AlarmTriggerActivity: ComponentActivity() {
     companion object {
         const val TAG = "AlarmTriggerActivity"
 
