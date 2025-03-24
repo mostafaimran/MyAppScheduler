@@ -11,7 +11,7 @@ interface AppEventDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertEvent(appEvent: AppEvent)
 
-    @Query("SELECT * FROM AppEvent")
+    @Query("SELECT * FROM AppEvent Order By logTime Desc")
     fun getAllEvents(): List<AppEvent>
 
     @Query("DELETE FROM AppEvent WHERE id = :scheduleId")

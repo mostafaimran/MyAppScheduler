@@ -55,6 +55,7 @@ fun EventsScreen(viewModel: AppEventsViewModel = hiltViewModel()) {
                         val calendar = Calendar.getInstance()
                         calendar.timeInMillis = eventData.appEvent.logTime
 
+                        Spacer(modifier = Modifier.height(8.dp))
                         Column(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -76,7 +77,7 @@ fun EventsScreen(viewModel: AppEventsViewModel = hiltViewModel()) {
                                 style = MaterialTheme.typography.titleSmall
                             )
                         }
-                        Spacer(modifier = Modifier.height(16.dp))
+                        Spacer(modifier = Modifier.height(8.dp))
                     }
                 }
             } else {

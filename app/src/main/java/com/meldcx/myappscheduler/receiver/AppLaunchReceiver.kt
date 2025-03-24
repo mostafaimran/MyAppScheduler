@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.util.Log
-import com.meldcx.myappscheduler.ui.activity.AlarmTriggerActivity
 import com.meldcx.myappscheduler.util.Extras
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Calendar
@@ -24,6 +23,6 @@ class AppLaunchReceiver : BroadcastReceiver() {
 
         Log.d(TAG, "onReceive $packageName at ${Calendar.getInstance().time}")
 
-        AlarmTriggerActivity.startActivity(context, id, alarmTime, repeatDaily, packageName)
+        AppLaunchService.startService(context, id, alarmTime, repeatDaily, packageName)
     }
 }
