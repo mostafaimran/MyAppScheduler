@@ -42,7 +42,7 @@ import com.meldcx.myappscheduler.util.getTitle
 @Composable
 fun HomeScreen(
     onAddEditSchedule: (schedule: AppSchedule?) -> Unit,
-    permissionDenied: () -> Unit
+    permissionDenied: () -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -72,7 +72,7 @@ fun HomeTabScreen(
     viewModel: HomeViewModel = hiltViewModel(),
     innerPadding: PaddingValues,
     onAddEditSchedule: (schedule: AppSchedule?) -> Unit,
-    permissionDenied: () -> Unit
+    permissionDenied: () -> Unit,
 ) {
     val homeScreenState = viewModel.homeScreenState.collectAsState().value
     val permissionGranted = homeScreenState.permissionGranted
@@ -83,7 +83,6 @@ fun HomeTabScreen(
         val windowWidthClass = currentWindowAdaptiveInfo().windowSizeClass.windowWidthSizeClass
 
         NavigationSuiteScaffold(
-            modifier = Modifier.padding(innerPadding),
             navigationSuiteColors = NavigationSuiteDefaults.colors(
                 navigationRailContainerColor = MaterialTheme.colorScheme.surfaceContainer,
                 navigationBarContainerColor = MaterialTheme.colorScheme.surfaceContainer
@@ -127,7 +126,11 @@ fun HomeTabScreen(
                 }
             }
         ) {
-            Box(modifier = Modifier.fillMaxSize()) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding)
+            ) {
                 when (currentPage.value) {
                     NavigationItem.Schedules -> {
                         Box(modifier = Modifier.fillMaxSize()) {
