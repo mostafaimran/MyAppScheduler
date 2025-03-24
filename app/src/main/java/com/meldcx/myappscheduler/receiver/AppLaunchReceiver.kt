@@ -53,7 +53,7 @@ class AppLaunchReceiver : BroadcastReceiver() {
         context: Context,
         id: Int,
         appName: String,
-        packageName: String
+        packageName: String,
     ) {
         val title = context.getString(R.string.app_name)
         val text = context.getString(R.string.time_to_open_app, appName)
@@ -61,7 +61,7 @@ class AppLaunchReceiver : BroadcastReceiver() {
         val pendingIntent =
             PendingIntent.getActivity(
                 context,
-                100,
+                id,
                 AlarmTriggerActivity.getIntent(
                     context,
                     id,
@@ -73,12 +73,11 @@ class AppLaunchReceiver : BroadcastReceiver() {
         val notificationManager = context.getSystemService(NotificationManager::class.java)
         val notification = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channelId = Constants.NOTIFICATION_CHANNEL_ID
-            val channel =
-                NotificationChannel(
-                    channelId,
-                    context.getString(R.string.app_name),
-                    NotificationManager.IMPORTANCE_LOW
-                )
+            val channel = NotificationChannel(
+                channelId,
+                context.getString(R.string.app_name),
+                NotificationManager.IMPORTANCE_HIGH
+            )
             notificationManager.createNotificationChannel(channel)
 
             NotificationCompat.Builder(
@@ -88,7 +87,8 @@ class AppLaunchReceiver : BroadcastReceiver() {
                 .setSmallIcon(R.drawable.alarm_icon)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setOngoing(true)
-                .setContentIntent(pendingIntent)
+                .setAutoCancel(true)
+                .setFullScreenIntent(pendingIntent, true)
                 .setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
                 .build()
         } else {
@@ -98,7 +98,7 @@ class AppLaunchReceiver : BroadcastReceiver() {
                 .setSmallIcon(R.drawable.alarm_icon)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setOngoing(true)
-                .setContentIntent(pendingIntent)
+                .setFullScreenIntent(pendingIntent, true)
                 .setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
                 .build()
         }
