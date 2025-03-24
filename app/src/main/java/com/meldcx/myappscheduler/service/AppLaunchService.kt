@@ -97,7 +97,7 @@ class AppLaunchService : Service() {
             startForeground(
                 Random().nextInt(),
                 notification,
-                ServiceInfo.FOREGROUND_SERVICE_TYPE_CAMERA or ServiceInfo.FOREGROUND_SERVICE_TYPE_MICROPHONE
+                ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC
             )
         } else {
             startForeground(1, notification)

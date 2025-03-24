@@ -114,7 +114,7 @@ fun SchedulesScreen(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp)
+                .padding(horizontal = 16.dp)
         ) {
             if (schedules.isNotEmpty()) {
                 LazyColumn(modifier = Modifier.padding(horizontal = 16.dp)) {
@@ -122,6 +122,7 @@ fun SchedulesScreen(
                         val calendar = Calendar.getInstance()
                         calendar.timeInMillis = schedule.scheduledTime
 
+                        Spacer(modifier = Modifier.height(8.dp))
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Column(
                                 modifier = Modifier
@@ -175,7 +176,7 @@ fun SchedulesScreen(
                                 )
                             }
                         }
-                        Spacer(modifier = Modifier.height(16.dp))
+                        Spacer(modifier = Modifier.height(8.dp))
                     }
                 }
             } else {

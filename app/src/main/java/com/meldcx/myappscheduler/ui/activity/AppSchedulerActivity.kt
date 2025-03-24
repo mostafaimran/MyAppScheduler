@@ -1,6 +1,9 @@
 package com.meldcx.myappscheduler.ui.activity
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -12,6 +15,7 @@ import com.google.accompanist.adaptive.calculateDisplayFeatures
 import com.meldcx.myappscheduler.ui.screens.NavigationStack
 import com.meldcx.myappscheduler.ui.theme.MyAppSchedulerTheme
 import dagger.hilt.android.AndroidEntryPoint
+import androidx.core.net.toUri
 
 @AndroidEntryPoint
 class AppSchedulerActivity : ComponentActivity() {
@@ -28,5 +32,9 @@ class AppSchedulerActivity : ComponentActivity() {
                 }
             }
         }
+
+        val intent = Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS)
+        intent.data = "package:$packageName".toUri()
+        startActivity(intent)
     }
 }
