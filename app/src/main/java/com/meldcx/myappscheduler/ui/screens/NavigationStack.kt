@@ -11,16 +11,20 @@ import com.meldcx.myappscheduler.R
 import com.meldcx.myappscheduler.datamodel.model.Screen
 
 @Composable
-fun NavigationStack() {
+fun NavigationStack(permissionDenied: () -> Unit) {
     val navController = rememberNavController()
 
     val context = LocalContext.current
 
     NavHost(navController = navController, startDestination = Screen.Schedules) {
         composable<Screen.Schedules> {
-            HomeScreen {
-                navController.navigate(Screen.AddSchedule(it?.id))
-            }
+            HomeScreen(
+                onAddEditSchedule = {
+                    navController.navigate(Screen.AddSchedule(it?.id))
+                }, permissionDenied = {
+                    permissionDenied()
+                }
+            )
         }
 
         composable<Screen.AddSchedule> {

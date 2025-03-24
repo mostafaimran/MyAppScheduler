@@ -257,7 +257,7 @@ fun AddScheduleScreen(
 
                 Spacer(modifier = Modifier.height(60.dp))
                 Button(
-                    modifier = Modifier
+                    modifier = Modifier.fillMaxWidth(.6f)
                         .padding(horizontal = 16.dp)
                         .align(Alignment.CenterHorizontally),
                     onClick = {
