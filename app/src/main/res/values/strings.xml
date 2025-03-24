@@ -26,4 +26,6 @@
     <string name="app_schedule_saved">App schedule for %s saved successfully</string>
     <string name="no_schedule_found">No schedules found. Create schedule by clicking + icon</string>
     <string name="no_events_found">No events found</string>
+    <string name="time_to_open_app">Time to open %s</string>
+    <string name="notification_permission_required">Notification permission is required to show notifications</string>
 </resources>

@@ -16,6 +16,7 @@ class AppSchedulerRepositoryImpl @Inject constructor(
     override fun scheduleApp(schedule: AppSchedule) {
         alarmRepository.setAlarm(
             schedule.id,
+            schedule.name,
             schedule.packageName,
             schedule.scheduledTime,
             schedule.repeatDaily
