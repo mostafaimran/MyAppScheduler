@@ -10,6 +10,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -53,6 +54,16 @@ fun HomeScreen(
                         text = stringResource(R.string.app_name),
                         style = MaterialTheme.typography.headlineSmall
                     )
+                },
+                actions = {
+                    IconButton(onClick = {
+                        onAddEditSchedule(null)
+                    }) {
+                        Icon(
+                            imageVector = Icons.Default.Add,
+                            contentDescription = "add schedule"
+                        )
+                    }
                 }
             )
         },
@@ -83,6 +94,7 @@ fun HomeTabScreen(
         val windowWidthClass = currentWindowAdaptiveInfo().windowSizeClass.windowWidthSizeClass
 
         NavigationSuiteScaffold(
+            modifier = Modifier.padding(top = innerPadding.calculateTopPadding()),
             navigationSuiteColors = NavigationSuiteDefaults.colors(
                 navigationRailContainerColor = MaterialTheme.colorScheme.surfaceContainer,
                 navigationBarContainerColor = MaterialTheme.colorScheme.surfaceContainer
@@ -129,26 +141,11 @@ fun HomeTabScreen(
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(innerPadding)
             ) {
                 when (currentPage.value) {
                     NavigationItem.Schedules -> {
                         Box(modifier = Modifier.fillMaxSize()) {
                             SchedulesScreen { onAddEditSchedule(it) }
-
-                            FloatingActionButton(
-                                modifier = Modifier
-                                    .align(Alignment.BottomEnd)
-                                    .padding(16.dp),
-                                onClick = {
-                                    onAddEditSchedule(null)
-                                }
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Default.Add,
-                                    contentDescription = "add schedule"
-                                )
-                            }
                         }
                     }
 

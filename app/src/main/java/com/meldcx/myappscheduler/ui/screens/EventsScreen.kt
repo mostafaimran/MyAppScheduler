@@ -50,7 +50,7 @@ fun EventsScreen(viewModel: AppEventsViewModel = hiltViewModel()) {
             CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
         } else {
             if (appScheduleEventDataList.isNotEmpty()) {
-                LazyColumn(modifier = Modifier.padding(16.dp)) {
+                LazyColumn(modifier = Modifier.padding(horizontal = 16.dp)) {
                     items(appScheduleEventDataList) { eventData ->
                         val calendar = Calendar.getInstance()
                         calendar.timeInMillis = eventData.appEvent.logTime
@@ -85,7 +85,9 @@ fun EventsScreen(viewModel: AppEventsViewModel = hiltViewModel()) {
                     stringResource(R.string.no_events_found),
                     style = MaterialTheme.typography.titleLarge,
                     textAlign = TextAlign.Center,
-                    modifier = Modifier.align(Alignment.Center)
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .padding(horizontal = 16.dp)
                 )
             }
         }

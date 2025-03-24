@@ -114,7 +114,6 @@ fun SchedulesScreen(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 16.dp)
         ) {
             if (schedules.isNotEmpty()) {
                 LazyColumn(modifier = Modifier.padding(horizontal = 16.dp)) {
@@ -184,7 +183,7 @@ fun SchedulesScreen(
                     stringResource(R.string.no_schedule_found),
                     style = MaterialTheme.typography.titleLarge,
                     textAlign = TextAlign.Center,
-                    modifier = Modifier.align(Alignment.Center)
+                    modifier = Modifier.align(Alignment.Center).padding(horizontal = 16.dp)
                 )
             }
         }
