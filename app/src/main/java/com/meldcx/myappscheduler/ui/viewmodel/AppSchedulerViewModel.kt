@@ -32,12 +32,8 @@ class AppSchedulerViewModel @Inject constructor(
     fun cancelSchedule(schedule: AppSchedule) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.cancelSchedule(schedule)
-            refreshSchedules()
+            loadSchedules()
         }
-    }
-
-    fun refreshSchedules() {
-        scheduleListState = scheduleListState.copy(loadSchedules = true)
     }
 }
 

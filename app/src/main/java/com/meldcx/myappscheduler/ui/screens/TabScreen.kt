@@ -42,6 +42,7 @@ import com.meldcx.myappscheduler.util.getTitle
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
+    loadSchedules: Boolean,
     onAddEditSchedule: (schedule: AppSchedule?) -> Unit,
     permissionDenied: () -> Unit,
 ) {
@@ -71,6 +72,7 @@ fun HomeScreen(
     ) { innerPadding ->
 
         HomeTabScreen(
+            loadSchedules = loadSchedules,
             innerPadding = innerPadding,
             onAddEditSchedule = onAddEditSchedule,
             permissionDenied = permissionDenied
@@ -81,6 +83,7 @@ fun HomeScreen(
 @Composable
 fun HomeTabScreen(
     viewModel: HomeViewModel = hiltViewModel(),
+    loadSchedules: Boolean,
     innerPadding: PaddingValues,
     onAddEditSchedule: (schedule: AppSchedule?) -> Unit,
     permissionDenied: () -> Unit,
@@ -145,7 +148,7 @@ fun HomeTabScreen(
                 when (currentPage.value) {
                     NavigationItem.Schedules -> {
                         Box(modifier = Modifier.fillMaxSize()) {
-                            SchedulesScreen { onAddEditSchedule(it) }
+                            SchedulesScreen(loadSchedules = loadSchedules) { onAddEditSchedule(it) }
                         }
                     }
 

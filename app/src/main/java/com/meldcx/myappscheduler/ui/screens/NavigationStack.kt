@@ -9,6 +9,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.meldcx.myappscheduler.R
 import com.meldcx.myappscheduler.datamodel.model.Screen
+import com.meldcx.myappscheduler.util.Extras.EXTRA_REFRESH_LIST
 
 @Composable
 fun NavigationStack(permissionDenied: () -> Unit) {
@@ -18,7 +19,9 @@ fun NavigationStack(permissionDenied: () -> Unit) {
 
     NavHost(navController = navController, startDestination = Screen.Schedules) {
         composable<Screen.Schedules> {
+            val loadSchedules = it.savedStateHandle.get<Boolean>(EXTRA_REFRESH_LIST) == true
             HomeScreen(
+                loadSchedules = loadSchedules,
                 onAddEditSchedule = {
                     navController.navigate(Screen.AddSchedule(it?.id))
                 }, permissionDenied = {
@@ -42,6 +45,7 @@ fun NavigationStack(permissionDenied: () -> Unit) {
                     Toast.LENGTH_SHORT
                 ).show()
 
+                navController.previousBackStackEntry?.savedStateHandle?.set(EXTRA_REFRESH_LIST, true)
                 navController.popBackStack()
 
             }

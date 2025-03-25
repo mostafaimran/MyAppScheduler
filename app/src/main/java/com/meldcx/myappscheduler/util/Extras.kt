@@ -6,4 +6,5 @@ object Extras {
     const val EXTRA_PACKAGE_NAME = "PackageName"
     const val EXTRA_ALARM_TIME = "AlarmTime"
     const val EXTRA_REPEAT_DAILY = "RepeatDaily"
+    const val EXTRA_REFRESH_LIST = "RefreshList"
 }
